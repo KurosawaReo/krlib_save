@@ -1,12 +1,11 @@
 /*
    - main.cpp - (DxLib)
-   ver.2026/06/04
+   ver.2026/06/11
 
    プログラムの開始テンプレ.
 */
 #include "KrLib_Dx/KR_Global.h"
 #include "KrLib_Dx/KR_App.h"
-#include "KrLib_Dx/KR_Debug.h"
 #include "KrLib_Dx/KR_Input.h"
 #include "KrLib_Dx/KR_Object.h"
 #include "KrLib_Dx/KR_ObjectList.h"
@@ -14,6 +13,7 @@
 #include "KrLib_Dx/KR_ManagerInsts.h"
 #include "KrLib_Dx/KR_SceneMng.h"
 #include "KrLib_Dx/KR_Sound.h"
+#include "KrLib_Dx/KR_TimerMng.h"
 using namespace KR;
 
 /*
@@ -88,26 +88,14 @@ int WINAPI WinMain(
 	ManagerInsts::NewManager<InputMng>(0);
 	ManagerInsts::NewManager<SoundMng>(1);
 	ManagerInsts::NewManager<SceneMng>(2);
+	ManagerInsts::NewManager<TimerMng>(3);
 	//それ以外の管理クラスを登録.
-	ManagerInsts::NewManager<GameManager>(3);
+	ManagerInsts::NewManager<GameManager>(4);
 
-	try {
-		//初期化処理.
-		App::InitDx(800, 640, true, 60, false);
-	}
-	catch (const ErrorMsg& err) {
-		//エラーメッセージ.
-		Debug::Log(_T("InitDx"), err.GetMsg());
-	}
-
-	try {
-		//ループ処理.
-		App::LoopDx();
-	}
-	catch (const ErrorMsg& err) {
-		//エラーメッセージ.
-		Debug::Log(_T("LoopDx"), err.GetMsg());
-	}
+	//初期化処理.
+	App::InitDx(800, 640, true, 60, false);
+	//ループ処理.
+	App::LoopDx();
 
 	return 0;
 }
