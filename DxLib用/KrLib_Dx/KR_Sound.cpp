@@ -28,7 +28,7 @@ namespace KR
 		handle = LoadSoundMem(fileName.c_str());
 		//エラー.
 		if (handle < 0) {
-			throw ErrorMsg(_T("Sound::LoadFile"), _T("読み込み失敗"));
+			throw ErrorMsg(_T("Sound::LoadFile"), _T("読み込み失敗:") + fileName);
 		}
 	}
 	//サウンド解放.
@@ -152,7 +152,7 @@ namespace KR
 	}
 
 	//サウンド取得.
-	Sound* SoundMng::Get(string saveName) {
+	Sound* SoundMng::Get(MY_STRING saveName) {
 		//存在すれば.
 		if (sounds.count(saveName) > 0) {
 			return &sounds[saveName]; //返す.
@@ -160,7 +160,7 @@ namespace KR
 		return nullptr;
 	}
 	//サウンド取得(チェックあり)
-	bool SoundMng::TryGet(string saveName, Sound* ptr) {
+	bool SoundMng::TryGet(MY_STRING saveName, Sound* ptr) {
 		//存在すれば.
 		if (sounds.count(saveName) > 0) {
 			ptr = &sounds[saveName]; //返す.
@@ -170,11 +170,11 @@ namespace KR
 	}
 
 	//サウンド読み込み.
-	void SoundMng::LoadFile(MY_STRING fileName, string saveName) {
+	void SoundMng::LoadFile(MY_STRING fileName, MY_STRING saveName) {
 	
 		//既に存在すれば.
 		if (sounds.count(saveName) > 0) {
-			throw ErrorMsg(_T("SoundMng::LoadFile"), _T("使用済みの保存名"));
+			throw ErrorMsg(_T("SoundMng::LoadFile"), _T("使用済みの保存名:") + saveName);
 			return;
 		}
 

@@ -1,11 +1,12 @@
 /*
    - main.cpp - (DxLib)
-   ver.2026/06/11
+   ver.2026/07/16
 
    プログラムの開始テンプレ.
 */
 #include "KrLib_Dx/KR_Global.h"
 #include "KrLib_Dx/KR_App.h"
+#include "KrLib_Dx/KR_Debug.h"
 #include "KrLib_Dx/KR_Input.h"
 #include "KrLib_Dx/KR_Object.h"
 #include "KrLib_Dx/KR_ObjectList.h"
@@ -21,7 +22,7 @@ using namespace KR;
    ObjectCirやObjectBoxを継承することを推奨.
    ObjectListで管理することで、配列でのオブジェクト管理がしやすくなる.
 */
-class Player : public ObjectCir
+class Object : public ObjectCir
 {
 private:
 public:
@@ -30,6 +31,7 @@ public:
 	}
 	//更新.
 	void Update() override {
+		Debug::Log(_T("test"));
 	}
 	//描画.
 	void Draw() override {
@@ -48,7 +50,7 @@ public:
 class GameManager : public ManagerBase
 {
 private:
-	ObjectList<Player> player;
+	ObjectList<Object> objects;
 
 public:
 	//コンストラクタ.
@@ -57,7 +59,7 @@ public:
 	//初期化.
 	void Init() override {
 		//オブジェクト生成.
-		player.NewObject();
+		objects.NewObject();
 	}
 	//リセット.
 	void Reset() override {
@@ -65,12 +67,12 @@ public:
 	//更新.
 	void Update() override {
 		//オブジェクト更新.
-		player.Update();
+		objects.Update();
 	}
 	//描画.
 	void Draw() override {
 		//オブジェクト描画.
-		player.Draw();
+		objects.Draw();
 	}
 };
 

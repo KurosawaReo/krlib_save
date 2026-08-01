@@ -5,6 +5,7 @@
 
 //[include] ".cpp"ファイルでのみ使うもの.
 #include "KR_Calc.h"
+#include "KR_DrawGraph.h"
 #include "KR_DrawShape.h"
 #include "KR_Input.h"
 #include "KR_ManagerInsts.h"
@@ -16,12 +17,12 @@ namespace KR
 // ▼*--=<[ ObjectShape ]>=--*▼ //
 
 	//画像.
-	void ObjectShape::SetDrawImg(string name) {
+	void ObjectShape::SetImage(MY_STRING name) {
 		useImg.clear();         //リセット.
 		useImg.push_back(name); //画像名を登録.
 		useImgNo = 0;           //1枚しかない場合は0で固定.
 	}
-	void ObjectShape::SetDrawImgs(vector<string> names, float changeTime) {
+	void ObjectShape::SetImages(vector<MY_STRING> names, float changeTime) {
 		//同じものでなければ.
 		if (useImg != names) {
 			useImg = names; //画像名配列を登録.
@@ -32,7 +33,7 @@ namespace KR
 	}
 	//画像アニメーション設定.
 	//ポーズ画面などに使う想定.
-	void ObjectShape::SetStopImgAnim(bool isStop) {
+	void ObjectShape::StopImageAnim(bool isStop) {
 		if (isStop) {
 			tmImgAnim.Pause(); //停止する(ポーズ)
 		}
@@ -41,7 +42,7 @@ namespace KR
 		}
 	}
 	//画像更新.
-	void ObjectShape::UpdateImg() {
+	void ObjectShape::UpdateImage() {
 		//複数の画像がある場合のみ.
 		if (useImg.size() > 1) {
 			//一定時間で画像切り替え.
@@ -94,24 +95,24 @@ namespace KR
 	}
 	
 	//DrawGraph描画.
-	void ObjectShape::DrawGraph(Anchor anc, bool isFloat, bool isCameraDisp) {
+	void ObjectShape::DrawGraph(Anchor anc, bool useFloat, bool isCameraDisp) {
 
 		if (!isActive) {
 			throw ErrorMsg(_T("ObjectShape::DrawGraph"), _T("非アクティブ"));
 			return;
 		}
 
-		UpdateImg(); //画像更新.
+		UpdateImage(); //画像更新.
 
 		//画像名を登録しているなら.
 		if (useImg.size() > 0) {
 			//画像データがある場合.
-			if (auto pImg = DrawImgMng::Get(useImg[useImgNo])) {
+			if (auto pImg = GraphMng::Get(useImg[useImgNo])) {
 				//座標にoffsetを足す.
 				DBL_XY pos = GetPos() + offset;
 				//描画.
 				try {
-					pImg->Draw(pos, anc, true, isFloat, isCameraDisp);
+					pImg->Draw(pos, anc, true, useFloat, isCameraDisp);
 				}
 				catch (const ErrorMsg& err) {
 					throw ErrorMsg(_T("ObjectShape::DrawGraph"), err.GetMsg());
@@ -131,24 +132,24 @@ namespace KR
 		}
 	}
 	//DrawRectGraph描画.
-	void ObjectShape::DrawRectGraph(DBL_RECT rect, Anchor anc, bool isFloat, bool isCameraDisp) {
+	void ObjectShape::DrawRectGraph(DBL_RECT rect, Anchor anc, bool useFloat, bool isCameraDisp) {
 
 		if (!isActive) {
 			throw ErrorMsg(_T("ObjectShape::DrawRectGraph"), _T("非アクティブ"));
 			return;
 		}
 
-		UpdateImg(); //画像更新.
+		UpdateImage(); //画像更新.
 
 		//画像名を登録しているなら.
 		if (useImg.size() > 0) {
 			//画像データがある場合.
-			if (auto pImg = DrawImgMng::Get(useImg[useImgNo])) {
+			if (auto pImg = GraphMng::Get(useImg[useImgNo])) {
 				//座標にoffsetを足す.
 				DBL_XY pos = GetPos() + offset;
 				//描画.
 				try {
-					pImg->DrawRect(pos, rect, anc, true, isFloat, isCameraDisp);
+					pImg->DrawRect(pos, rect, anc, true, useFloat, isCameraDisp);
 				}
 				catch (const ErrorMsg& err) {
 					throw ErrorMsg(_T("ObjectShape::DrawRectGraph"), err.GetMsg());
@@ -168,24 +169,24 @@ namespace KR
 		}
 	}
 	//DrawExtendGraph描画.
-	void ObjectShape::DrawExtendGraph(DBL_XY sizeRate, Anchor anc, bool isFloat, bool isCameraDisp) {
+	void ObjectShape::DrawExtendGraph(DBL_XY sizeRate, Anchor anc, bool useFloat, bool isCameraDisp) {
 
 		if (!isActive) {
 			throw ErrorMsg(_T("ObjectShape::DrawExtendGraph"), _T("非アクティブ"));
 			return;
 		}
 
-		UpdateImg(); //画像更新.
+		UpdateImage(); //画像更新.
 
 		//画像名を登録しているなら.
 		if (useImg.size() > 0) {
 			//画像データがある場合.
-			if (auto pImg = DrawImgMng::Get(useImg[useImgNo])) {
+			if (auto pImg = GraphMng::Get(useImg[useImgNo])) {
 				//座標にoffsetを足す.
 				DBL_XY pos = GetPos() + offset;
 				//描画.
 				try {
-					pImg->DrawExtend(pos, sizeRate, anc, true, isFloat, isCameraDisp);
+					pImg->DrawExtend(pos, sizeRate, anc, true, useFloat, isCameraDisp);
 				}
 				catch (const ErrorMsg& err) {
 					throw ErrorMsg(_T("ObjectShape::DrawExtendGraph"), err.GetMsg());
@@ -205,24 +206,24 @@ namespace KR
 		}
 	}
 	//DrawRotaGraph描画.
-	void ObjectShape::DrawRotaGraph(double ang, double sizeRate, INT_XY pivot, bool isFloat, bool isCameraDisp) {
+	void ObjectShape::DrawRotaGraph(double ang, double sizeRate, INT_XY pivot, bool useFloat, bool isCameraDisp) {
 
 		if (!isActive) {
 			throw ErrorMsg(_T("ObjectShape::DrawRotaGraph"), _T("非アクティブ"));
 			return;
 		}
 
-		UpdateImg(); //画像更新.
+		UpdateImage(); //画像更新.
 
 		//画像名を登録しているなら.
 		if (useImg.size() > 0) {
 			//画像データがある場合.
-			if (auto pImg = DrawImgMng::Get(useImg[useImgNo])) {
+			if (auto pImg = GraphMng::Get(useImg[useImgNo])) {
 				//座標にoffsetを足す.
 				DBL_XY pos = GetPos() + offset;
 				//描画.
 				try {
-					pImg->DrawRota(pos, sizeRate, ang, pivot, true, isFloat, isCameraDisp);
+					pImg->DrawRota(pos, sizeRate, ang, pivot, true, useFloat, isCameraDisp);
 				}
 				catch (const ErrorMsg& err) {
 					throw ErrorMsg(_T("ObjectShape::DrawRotaGraph"), err.GetMsg());
