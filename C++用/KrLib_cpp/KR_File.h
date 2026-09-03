@@ -1,8 +1,8 @@
 /*
    - KR_File.h - (C++)
-   ver.2026/07/16
+   ver.2026/09/03
 
-   ファイルの読み取り/書き出し機能。
+   ファイルの読み取り, 書き出し機能。
 */
 #pragma once
 //[include] KR_Global.
@@ -10,6 +10,7 @@
   #include "KR_Global.h"
 #endif
 
+//[include] ".h"ファイルで使うもの.
 #include <fstream>
 #include <filesystem>
 
@@ -86,6 +87,5 @@ namespace KR
         int       ReadInt    ();
         void      WriteString(MY_STRING data);
         void      WriteInt   (int data);
-
     };
 }

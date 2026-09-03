@@ -1,9 +1,9 @@
 /*
    - KR_Object.h - (DxLib)
-   ver.2026/07/18
+   ver.2026/09/03
 
    オブジェクト機能。
-   継承して使うことで、Draw/Calc/Inputの一部機能をオブジェクト指向で使える。
+   描画や当たり判定などの機能をオブジェクト指向で使える。
 */
 #pragma once
 //[include] KR_Global.
@@ -64,7 +64,7 @@ namespace KR
 		DBL_XY       ArcPos		    (double ang, double len);
 		double       FacingAng		(DBL_XY targetPos);
 		//Inputの機能.
-		void         MoveKey4Dir    (float speed);
+		void         MoveKey4Dir    (float speed, bool isWASD = true, bool isArrow = true, bool isUpDown = true, bool isLeftRight = true);
 		void         MovePad4Dir    (float speed);
 		void         MovePadStick   (float speed);
 		void         MoveMousePos   (bool isMoveX = true, bool isMoveY = true);
@@ -80,7 +80,7 @@ namespace KR
 	class ObjectCir : public ObjectShape
 	{
 	//▼ ===== 変数 ===== ▼.
-	private:
+	protected:
 		Circle cir{}; //円のデータ(当たり判定, 座標)
 
 	//▼ ===== 関数 ===== ▼.
@@ -91,7 +91,7 @@ namespace KR
 			cir.color = 0xFFFFFF; //デフォルト色.
 		}
 		//get.
-		Circle*   GetCir   () { return &cir; } //円を取得.
+		const Circle* GetCir() const { return &cir; } //円を取得.
 
 		//座標, サイズ.
 		void      SetPos   (DBL_XY _pos)       override { cir.pos = _pos; }
@@ -111,7 +111,7 @@ namespace KR
 	class ObjectBox : public ObjectShape
 	{
 	//▼ ===== 変数 ===== ▼.
-	private:
+	protected:
 		Box box{}; //四角形のデータ(当たり判定, 座標)
 
 	//▼ ===== 関数 ===== ▼.
@@ -122,7 +122,7 @@ namespace KR
 			box.color = 0xFFFFFF; //デフォルト色.
 		}
 		//get.
-		Box*      GetBox() { return &box; } //四角形を取得.
+		const Box* GetBox() const { return &box; } //四角形を取得.
 
 		//座標, サイズ.
 		void      SetPos   (DBL_XY _pos)       override { box.pos = _pos; }
@@ -133,6 +133,25 @@ namespace KR
 		//当たり判定.
 		bool      HitCheckCir(const Circle& cir) const;
 		bool      HitCheckBox(const Box&    box) const;
+		//描画.
+		void      DrawShape(bool isFill = true, bool isAnti = false, bool isCameraDisp = true) const override;
+	};
+
+	//オブジェクト(形を持たない点) [継承想定]
+	class ObjectPoint : public ObjectShape
+	{
+		//▼ ===== 変数 ===== ▼.
+	private:
+		DBL_XY pos;	//座標.
+
+		//▼ ===== 関数 ===== ▼.
+	public:
+		//座標, サイズ.
+		void      SetPos(DBL_XY _pos)       override { pos = _pos; }
+		void      AddPos(DBL_XY _pos)       override { pos += _pos; }
+		DBL_XY    GetPos()            const override { return pos; }
+		DBL_XY*   GetPosPtr()               override { return &pos; }
+		DBL_XY    GetSize()           const override { return {0, 0}; } //サイズなし.
 		//描画.
 		void      DrawShape(bool isFill = true, bool isAnti = false, bool isCameraDisp = true) const override;
 	};

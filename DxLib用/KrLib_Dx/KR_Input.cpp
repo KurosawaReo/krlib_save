@@ -68,34 +68,41 @@ namespace KR
 	}
 
 	//キーボード操作取得(上下左右キー)
-	DBL_XY InputMng::GetKey4Dir(bool isWASD, bool isArrow) {
-
-		INT_XY vec{}; //入力.
+	DBL_XY InputMng::GetKey4Dir(bool isWASD, bool isArrow, bool isUpDown, bool isLeftRight) {
 
 		//キー入力に応じて移動力を与える.
-		if (
-			(IsPushKey(KeyID::Up) && isArrow) ||
-			(IsPushKey(KeyID::W)  && isWASD)
-		){
-			vec.y += -1;
+		INT_XY vec{};
+
+		//上下入力が有効なら.
+		if (isUpDown) {
+			if (
+				(IsPushKey(KeyID::Up) && isArrow) ||
+				(IsPushKey(KeyID::W)  && isWASD)
+			){
+				vec.y += -1;
+			}
+			if (
+				(IsPushKey(KeyID::Down) && isArrow) ||
+				(IsPushKey(KeyID::S)    && isWASD)
+			){
+				vec.y += +1;
+			}
 		}
-		if (
-			(IsPushKey(KeyID::Down) && isArrow) ||
-			(IsPushKey(KeyID::S)    && isWASD)
-		){
-			vec.y += +1;
-		}
-		if (
-			(IsPushKey(KeyID::Left) && isArrow) ||
-			(IsPushKey(KeyID::A)    && isWASD)
-		){
-			vec.x += -1;
-		}
-		if (
-			(IsPushKey(KeyID::Right) && isArrow) ||
-			(IsPushKey(KeyID::D)     && isWASD)
-		){
-			vec.x += +1;
+
+		//左右入力が有効なら.
+		if (isLeftRight) {
+			if (
+				(IsPushKey(KeyID::Left) && isArrow) ||
+				(IsPushKey(KeyID::A)    && isWASD)
+			){
+				vec.x += -1;
+			}
+			if (
+				(IsPushKey(KeyID::Right) && isArrow) ||
+				(IsPushKey(KeyID::D)     && isWASD)
+			){
+				vec.x += +1;
+			}
 		}
 
 		//入力ベクトル(-1.0～1.0)を返す.

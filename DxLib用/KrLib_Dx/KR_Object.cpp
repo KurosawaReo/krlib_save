@@ -74,20 +74,27 @@ namespace KR
 	}
 
 	//移動操作.
-	void ObjectShape::MoveKey4Dir(float speed) {
-		const DBL_XY input = ManagerInsts::Get<InputMng>()->GetKey4Dir();
-		SetPos(GetPos() + input * speed); //現在地 + 入力 * 速度.
+	void ObjectShape::MoveKey4Dir(float speed, bool isWASD, bool isArrow, bool isUpDown, bool isLeftRight) {
+		//入力取得.
+		const DBL_XY input = ManagerInsts::Get<InputMng>()->GetKey4Dir(isWASD, isArrow, isUpDown, isLeftRight);
+		//現在地 + 入力 * 速度.
+		SetPos(GetPos() + input * speed);
 	}
 	void ObjectShape::MovePad4Dir(float speed) {
+		//入力取得.
 		const DBL_XY input = ManagerInsts::Get<InputMng>()->GetPad4Dir();
-		SetPos(GetPos() + input * speed); //現在地 + 入力 * 速度.
+		//現在地 + 入力 * 速度.
+		SetPos(GetPos() + input * speed);
 	}
 	void ObjectShape::MovePadStick(float speed) {
+		//入力取得.
 		const DBL_XY input = ManagerInsts::Get<InputMng>()->GetPadStick();
-		SetPos(GetPos() + input * speed); //現在地 + 入力 * 速度.
+		//現在地 + 入力 * 速度.
+		SetPos(GetPos() + input * speed);
 	}
 	void ObjectShape::MoveMousePos(bool isMoveX, bool isMoveY) {
-		const DBL_XY input = ManagerInsts::Get<InputMng>()->GetPadStick();
+		//入力取得.
+		const DBL_XY input = ManagerInsts::Get<InputMng>()->GetMousePos();
 		//有効ならマウス座標を反映.
 		double x = (isMoveX) ? input.x : GetPos().x;
 		double y = (isMoveY) ? input.y : GetPos().y;
@@ -97,10 +104,8 @@ namespace KR
 	//DrawGraph描画.
 	void ObjectShape::DrawGraph(Anchor anc, bool useFloat, bool isCameraDisp) {
 
-		if (!isActive) {
-			throw ErrorMsg(_T("ObjectShape::DrawGraph"), _T("非アクティブ"));
-			return;
-		}
+		//非アクティブなら描画しない.
+		if (!isActive) { return; }
 
 		UpdateImage(); //画像更新.
 
@@ -131,13 +136,12 @@ namespace KR
 			return;
 		}
 	}
+
 	//DrawRectGraph描画.
 	void ObjectShape::DrawRectGraph(DBL_RECT rect, Anchor anc, bool useFloat, bool isCameraDisp) {
 
-		if (!isActive) {
-			throw ErrorMsg(_T("ObjectShape::DrawRectGraph"), _T("非アクティブ"));
-			return;
-		}
+		//非アクティブなら描画しない.
+		if (!isActive) { return; }
 
 		UpdateImage(); //画像更新.
 
@@ -168,13 +172,12 @@ namespace KR
 			return;
 		}
 	}
+
 	//DrawExtendGraph描画.
 	void ObjectShape::DrawExtendGraph(DBL_XY sizeRate, Anchor anc, bool useFloat, bool isCameraDisp) {
 
-		if (!isActive) {
-			throw ErrorMsg(_T("ObjectShape::DrawExtendGraph"), _T("非アクティブ"));
-			return;
-		}
+		//非アクティブなら描画しない.
+		if (!isActive) { return; }
 
 		UpdateImage(); //画像更新.
 
@@ -205,13 +208,12 @@ namespace KR
 			return;
 		}
 	}
+
 	//DrawRotaGraph描画.
 	void ObjectShape::DrawRotaGraph(double ang, double sizeRate, INT_XY pivot, bool useFloat, bool isCameraDisp) {
 
-		if (!isActive) {
-			throw ErrorMsg(_T("ObjectShape::DrawRotaGraph"), _T("非アクティブ"));
-			return;
-		}
+		//非アクティブなら描画しない.
+		if (!isActive) { return; }
 
 		UpdateImage(); //画像更新.
 
@@ -257,16 +259,15 @@ namespace KR
 	bool ObjectCir::HitCheckLine(const Line& line, DBL_XY* nearestPos) const {
 		return Calc::HitLineCir(line, this->cir, nearestPos);
 	}
-	//図形: 円を描画.
+
+	//図形(円)を描画.
 	void ObjectCir::DrawShape(bool isFill, bool isAnti, bool isCameraDisp) const {
 
-		if (!isActive) {
-			throw ErrorMsg(_T("ObjectCir::DrawShape"), _T("非アクティブ"));
-			return;
-		}
+		//非アクティブなら描画しない.
+		if (!isActive) { return; }
 
-		//座標にoffsetを足す.
 		Circle tmpCir = cir;
+		//座標にoffsetを足す.
 		tmpCir.pos += offset;
 		//描画.
 		try {
@@ -288,16 +289,15 @@ namespace KR
 	bool ObjectBox::HitCheckBox(const Box& box) const {
 		return Calc::HitBoxBox(this->box, box);
 	}
-	//図形: 四角形を描画.
+
+	//図形(四角形)を描画.
 	void ObjectBox::DrawShape(bool isFill, bool isAnti, bool isCameraDisp) const {
 
-		if (!isActive) {
-			throw ErrorMsg(_T("ObjectBox::DrawShape"), _T("非アクティブ"));
-			return;
-		}
+		//非アクティブなら描画しない.
+		if (!isActive) { return; }
 
-		//座標にoffsetを足す.
 		Box tmpBox = box;
+		//座標にoffsetを足す.
 		tmpBox.pos += offset;
 		//描画.
 		try {
@@ -305,6 +305,30 @@ namespace KR
 		}
 		catch (const ErrorMsg& err) {
 			throw ErrorMsg(_T("ObjectBox::DrawShape"), err.GetMsg());
+			return;
+		}
+	}
+
+// ▼*--=<[ ObjectPoint ]>=--*▼ //
+
+	//図形(点)を描画.
+	void ObjectPoint::DrawShape(bool isFill, bool isAnti, bool isCameraDisp) const {
+
+		//非アクティブなら描画しない.
+		if (!isActive) { return; }
+
+		//小さい円を描画する.
+		Circle tmpCir;
+		tmpCir.pos   = pos + offset;
+		tmpCir.r     = 5;
+		tmpCir.color = ColorID::Red;
+
+		//描画.
+		try {
+			DrawCircleKR(tmpCir, Anchor::Mid, isFill, isAnti, isCameraDisp);
+		}
+		catch (const ErrorMsg& err) {
+			throw ErrorMsg(_T("ObjectPoint::DrawShape"), err.GetMsg());
 			return;
 		}
 	}

@@ -23,7 +23,7 @@ namespace KR
 		//ドラッグされてる時.
 		if (isDrag) {
 			SetPos(inputMng->GetMousePos());
-			GetCir()->color = 0x00ffff;
+			cir.color = 0x00ffff;
 			//画面外には行かないように.
 			if (IsOutInArea(App::GetWindowRect().ToDbl(), false)) {
 				FixPosInArea(App::GetWindowRect().ToDbl());
@@ -31,7 +31,7 @@ namespace KR
 		}
 		//通常時.
 		else {
-			GetCir()->color = 0xffffff;
+			cir.color = 0xffffff;
 		}
 	}
 

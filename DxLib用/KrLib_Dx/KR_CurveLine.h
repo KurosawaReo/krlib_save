@@ -1,6 +1,6 @@
 /*
    - KR_CurveLine.h - (DxLib)
-   ver.2026/06/12
+   ver.2026/09/03
 
    ベジエ曲線と、スプライン曲線。
 */
@@ -31,8 +31,8 @@ namespace KR
 
 		//基本処理.
 		void Init() override {
-			GetCir()->r = 10;
-			GetCir()->color = ColorID::White;
+			cir.r = 10;
+			cir.color = ColorID::White;
 		}
 		void Update ()       override;
 		void Draw   ()       override {};               //未使用.

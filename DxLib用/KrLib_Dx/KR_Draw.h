@@ -39,13 +39,6 @@ namespace KR
 		Sub			= DX_BLENDMODE_SUB,			//減算ブレンド(重なると明度が暗くなる)
 		Mul			= DX_BLENDMODE_MUL			//乗算ブレンド.
 	};
-	//アンカー(描画の基準点)
-	enum class Anchor
-	{
-		LU,	U,   RU, //[例] Anchor::LU = 左上(Left Up)
-		L,  Mid, R,
-		LD,	D,   RD,
-	};
 
 	//テキスト描画クラス.
 	class DrawStr

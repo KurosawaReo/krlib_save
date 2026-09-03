@@ -1,6 +1,6 @@
 /*
    - KR_Global.h - (DxLib)
-   ver.2026/05/21
+   ver.2026/09/03
 
    KrLib全体で使う汎用プログラム。
 */
@@ -19,6 +19,14 @@
 //KrLib名前空間.
 namespace KR
 {
+	//アンカー(基準点)
+	enum class Anchor
+	{
+		LU, U,   RU, //[例] Anchor::LU = 左上(Left Up)
+		L,  Mid, R,
+		LD, D,   RD,
+	};
+
 	//カラーID(15色対応)
 	enum class ColorID
 	{
@@ -82,7 +90,10 @@ namespace KR
 		//コンストラクタ.
 		Circle();
 		Circle(DBL_XY _pos, float _r, MY_COLOR _color, float _thick);
+		//描画.
+		void Draw(Anchor anc = Anchor::Mid, bool isFill = true, bool isAnti = false, bool isCameraDisp = true);
 	};
+
 	//四角形データ.
 	struct Box
 	{
@@ -94,7 +105,10 @@ namespace KR
 		//コンストラクタ.
 		Box();
 		Box(DBL_XY _pos, DBL_XY _size, MY_COLOR _color, float _thick);
+		//描画.
+		void Draw(Anchor anc = Anchor::Mid, bool isFill = true, bool isAnti = false, bool isCameraDisp = true);
 	};
+
 	//三角形データ.
 	struct Triangle
 	{
@@ -105,7 +119,10 @@ namespace KR
 		//コンストラクタ.
 		Triangle();
 		Triangle(DBL_XY _pos1, DBL_XY _pos2, DBL_XY _pos3, MY_COLOR _color, float _thick);
+		//描画.
+		void Draw(bool isFill = true, bool isAnti = false, bool isCameraDisp = true);
 	};
+
 	//線データ.
 	struct Line
 	{
@@ -117,7 +134,10 @@ namespace KR
 		//コンストラクタ.
 		Line();
 		Line(DBL_XY _stPos, DBL_XY _edPos, MY_COLOR _color, float _thick);
+		//描画.
+		void Draw(bool isAnti = false, bool isCameraDisp = true);
 	};
+
 	//扇形データ.
 	struct Pie
 	{
@@ -131,7 +151,10 @@ namespace KR
 		//コンストラクタ.
 		Pie();
 		Pie(DBL_XY _pos, double _r, double _stAng, double _arcAng, MY_COLOR _color, float _thick);
+		//描画.
+		void Draw(bool isAnti = false, bool isCameraDisp = true);
 	};
+
 	//ベジエ曲線.
 	struct BezierLine
 	{
@@ -145,7 +168,10 @@ namespace KR
 		//コンストラクタ.
 		BezierLine();
 		BezierLine(DBL_XY _stPos, DBL_XY _edPos, DBL_XY _stContrPos, DBL_XY _edContrPos, MY_COLOR _color, float _thick);
+		//描画.
+		void Draw(bool isDot, bool isAnti = false, bool isCameraDisp = true);
 	};
+
 	//スプライン曲線.
 	struct Spline
 	{
@@ -156,7 +182,10 @@ namespace KR
 		//コンストラクタ.
 		Spline();
 		Spline(const vector<DBL_XY>& _points, MY_COLOR _color, float _thick);
+		//描画.
+		void Draw(bool isDot, bool isAnti = false, bool isCameraDisp = true);
 	};
+
 	//ポリゴン.
 	struct Polygon
 	{
@@ -168,5 +197,7 @@ namespace KR
 		//コンストラクタ.
 		Polygon();
 		Polygon(DBL_XY _pos, const vector<DBL_XY>& _points, MY_COLOR _color, float _thick);
+		//描画.
+		void Draw(bool isSurround = false, bool isAnti = false, bool isCameraDisp = true);
 	};
 }

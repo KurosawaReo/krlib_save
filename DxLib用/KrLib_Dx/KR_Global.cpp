@@ -5,6 +5,7 @@
 
 //[include] ".cpp"ファイルでのみ使うもの.
 #include <WinNls.h>
+#include "KR_DrawShape.h"
 
 //KrLib名前空間.
 namespace KR
@@ -84,69 +85,115 @@ namespace KR
 			color.a == other.a;
 	}
 
-// ▼*--=<[ 図形 ]>=--*▼ //
+// ▼*--=<[ 図形 : Circle ]>=--*▼ //
 
-	//Circle.
+	//コンストラクタ.
 	Circle::Circle() :
 		pos(0, 0), r(10), color(ColorID::White), thick(1) //初期値.
 	{}
 	Circle::Circle(DBL_XY _pos, float _r, MY_COLOR _color, float _thick) :
 		pos(_pos), r(_r), color(_color), thick(_thick) //初期値.
 	{}
+	//描画.
+	void Circle::Draw(Anchor anc, bool isFill, bool isAnti, bool isCameraDisp) {
+		DrawCircleKR(*this, anc, isFill, isAnti, isCameraDisp);
+	}
 
-	//box.
+// ▼*--=<[ 図形 : Box ]>=--*▼ //
+
+	//コンストラクタ.
 	Box::Box() :
 		pos(0, 0), size(10, 10), color(ColorID::White), thick(1) //初期値.
 	{}
 	Box::Box(DBL_XY _pos, DBL_XY _size, MY_COLOR _color, float _thick) :
 		pos(_pos), size(_size), color(_color), thick(_thick) //初期値.
 	{}
+	//描画.
+	void Box::Draw(Anchor anc, bool isFill, bool isAnti, bool isCameraDisp) {
+		DrawBoxKR(*this, anc, isFill, isAnti, isCameraDisp);
+	}
 
-	//Triangle.
+// ▼*--=<[ 図形 : Triangle ]>=--*▼ //
+
+	//コンストラクタ.
 	Triangle::Triangle() :
 		pos{ {0, 0}, {0, 0}, {0, 0} }, color(ColorID::White), thick(1) //初期値.
 	{}
 	Triangle::Triangle(DBL_XY _pos1, DBL_XY _pos2, DBL_XY _pos3, MY_COLOR _color, float _thick) :
 		pos{ _pos1, _pos2, _pos3 }, color(ColorID::White), thick(1) //初期値.
 	{}
+	//描画.
+	void Triangle::Draw(bool isFill, bool isAnti, bool isCameraDisp) {
+		DrawTriangleKR(*this, isFill, isAnti, isCameraDisp);
+	}
 
-	//Line.
+// ▼*--=<[ 図形 : Line ]>=--*▼ //
+
+	//コンストラクタ.
 	Line::Line() :
 		stPos(0, 0), edPos(0, 0), color(ColorID::White), thick(1) //初期値.
 	{}
 	Line::Line(DBL_XY _stPos, DBL_XY _edPos, MY_COLOR _color, float _thick) :
 		stPos(_stPos), edPos(_edPos), color(_color), thick(_thick) //初期値.
 	{}
+	//描画.
+	void Line::Draw(bool isAnti, bool isCameraDisp) {
+		DrawLineKR(*this, isAnti, isCameraDisp);
+	}
 
-	//Pie.
+// ▼*--=<[ 図形 : Pie ]>=--*▼ //
+
+	//コンストラクタ.
 	Pie::Pie() :
 		pos(0, 0), r(10), stAng(0), arcAng(0), color(ColorID::White), thick(1) //初期値.
 	{}
 	Pie::Pie(DBL_XY _pos, double _r, double _stAng, double _arcAng, MY_COLOR _color, float _thick) :
 		pos(_pos), r(_r), stAng(_stAng), arcAng(_arcAng), color(_color), thick(_thick) //初期値.
 	{}
+	//描画.
+	void Pie::Draw(bool isAnti, bool isCameraDisp) {
+		DrawPieKR(*this, isAnti, isCameraDisp);
+	}
 
-	//BezierLine.
+// ▼*--=<[ 図形 : BezierLine ]>=--*▼ //
+
+	//コンストラクタ.
 	BezierLine::BezierLine() :
 		stPos(0, 0), edPos(0, 0), stContrPos(0, 0), edContrPos(0, 0), color(ColorID::White), thick(1) //初期値.
 	{}
 	BezierLine::BezierLine(DBL_XY _stPos, DBL_XY _edPos, DBL_XY _stContrPos, DBL_XY _edContrPos, MY_COLOR _color, float _thick) :
 		stPos(_stPos), edPos(_edPos), stContrPos(_stContrPos), edContrPos(_edContrPos), color(_color), thick(_thick)
 	{}
+	//描画.
+	void BezierLine::Draw(bool isDot, bool isAnti, bool isCameraDisp) {
+		DrawBezierLineKR(*this, isDot, isAnti, isCameraDisp);
+	}
 
-	//Spline.
+// ▼*--=<[ 図形 : Spline ]>=--*▼ //
+
+	//コンストラクタ.
 	Spline::Spline() :
 		points(0), color(ColorID::White), thick(1) //初期値.
 	{}
 	Spline::Spline(const vector<DBL_XY>& _points, MY_COLOR _color, float _thick) :
 		points(_points), color(_color), thick(_thick)
 	{}
+	//描画.
+	void Spline::Draw(bool isDot, bool isAnti, bool isCameraDisp) {
+		DrawSplineKR(*this, isDot, isAnti, isCameraDisp);
+	}
 
-	//Polygon.
+// ▼*--=<[ 図形 : Polygon ]>=--*▼ //
+
+	//コンストラクタ.
 	Polygon::Polygon() :
 		pos(0, 0), points(), color(ColorID::White), thick(1)
 	{}
 	Polygon::Polygon(DBL_XY _pos, const vector<DBL_XY>& _points, MY_COLOR _color, float _thick) :
 		pos(_pos), points(_points), color(_color), thick(_thick)
 	{}
+	//描画.
+	void Polygon::Draw(bool isSurround, bool isAnti, bool isCameraDisp) {
+		DrawPolygonKR(*this, isSurround, isAnti, isCameraDisp);
+	}
 }
