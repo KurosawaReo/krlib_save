@@ -57,7 +57,7 @@ namespace KR
 			DrawCircle(mx, my, 5,  0x60FFFF);
 			DrawCircle(mx, my, 3,  0xC0FFFF);
 		}
-		//コントローラIDの表示.
+		//コントローラーIDの表示.
 		void LogPadID() {
 			DrawFormatString(100, 300, 0xFFFFFF, _T("pad:%d"), GetJoypadInputState(DX_INPUT_PAD1));
 		}
@@ -72,14 +72,14 @@ namespace KR
 			cir.pos   = {_dbl(pos.x), _dbl(pos.y)};
 			cir.r     = 10;
 			cir.color = color;
-			DrawCircleKR(cir);
+			cir.Draw();
 		}
 		void DispPos(DBL_XY pos, MY_COLOR color) {
 			Circle cir;
 			cir.pos   = pos;
 			cir.r     = 10;
 			cir.color = color;
-			DrawCircleKR(cir);
+			cir.Draw();
 		}
 
 		//マウスカーソルに合わせてカメラを動かす.

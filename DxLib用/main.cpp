@@ -1,6 +1,6 @@
 /*
-   - main.cpp - (DxLib)
-   ver.2026/07/16
+   - main.cpp - (KrLib_Dx用)
+   ver.2026/10/14
 
    プログラムの開始テンプレ.
 */
@@ -54,7 +54,7 @@ private:
 
 public:
 	//コンストラクタ.
-	GameManager(int order) : ManagerBase(order) {}
+	GameManager(){}
 
 	//初期化.
 	void Init() override {
@@ -84,15 +84,15 @@ int WINAPI WinMain(
 ){
 	/*
 	   [管理クラス生成]
-	   引数で実行順(order値)を入力する.
+	   生成した順にInitやUpdateなどが自動で実行される.
 	*/
 	//KrLibに実装されている管理クラスを登録.
-	ManagerInsts::NewManager<InputMng>(0);
-	ManagerInsts::NewManager<SoundMng>(1);
-	ManagerInsts::NewManager<SceneMng>(2);
-	ManagerInsts::NewManager<TimerMng>(3);
+	ManagerInsts::NewManager<InputMng>();
+	ManagerInsts::NewManager<SoundMng>();
+	ManagerInsts::NewManager<SceneMng>();
+	ManagerInsts::NewManager<TimerMng>();
 	//それ以外の管理クラスを登録.
-	ManagerInsts::NewManager<GameManager>(4);
+	ManagerInsts::NewManager<GameManager>();
 
 	//初期化処理.
 	App::InitDx(800, 640, true, 60, false);
